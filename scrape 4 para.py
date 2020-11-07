@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 speakers, durations,topics,views =[],[],[],[]
-for i in range(4):
+for i in range(100):
     url = 'https://www.ted.com/talks?page='+str(i)+'&sort=popular'
 
     headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'}
@@ -28,11 +29,15 @@ for i in range(4):
             view = view.text.strip()[:-1]   # 单位million
             views.append(view)
 
-print(speakers)
-print(len(speakers))
-print(durations)
-print(len(durations))
-print(topics)
-print(len(topics))
-print(views)
-print(len(views))
+# print(len(speakers),speakers)
+# print(len(durations),durations)
+# print(len(topics),topics)
+# print(len(views),views)
+
+list_labels = ['speakers', 'durations', 'topics', 'views']
+list_cols = [speakers, durations, topics, views]
+zipped = list(zip(list_labels, list_cols))
+ted_talk_data = dict(zipped)
+df = pd.DataFrame(ted_talk_data)
+
+df.to_csv('ted_talks_data.csv', index = False)
